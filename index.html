@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de EXP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .calculator-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            transition: border 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border: 1px solid #007bff;
+            outline: none;
+        }
+
+        .result {
+            font-size: 1em;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .replicate-btn {
+            background-color: #28a745;
+            margin-right: 10px;
+        }
+
+        .calculate-btn {
+            background-color: #007bff;
+        }
+
+        button:hover {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        #expTotal {
+            color: #e63946;
+        }
+    </style>
+</head>
+<body>
+    <h2>Calculadora de EXP</h2>
+    <p>Insira o nível atual e o nível desejado para calcular a quantidade de EXP necessária.</p>
+
+    <div class="calculator-container">
+        <div class="input-group">
+            <label for="levelAtual1">Nível Atual do Primeiro Herói:</label>
+            <input type="number" id="levelAtual1" min="1" max="150">
+            <label for="levelDesejado1">Nível Desejado:</label>
+            <input type="number" id="levelDesejado1" min="1" max="150">
+            <p>EXP Necessária: <span id="resultado1" class="result">0</span></p>
+            <button class="replicate-btn" onclick="replicarValores()">Replicar Níveis</button>
+        </div>
+
+        <div class="input-group">
+            <label for="levelAtual2">Nível Atual do Segundo Herói:</label>
+            <input type="number" id="levelAtual2" min="1" max="150">
+            <label for="levelDesejado2">Nível Desejado:</label>
+            <input type="number" id="levelDesejado2" min="1" max="150">
+            <p>EXP Necessária: <span id="resultado2" class="result">0</span></p>
+        </div>
+
+        <div class="input-group">
+            <label for="levelAtual3">Nível Atual do Terceiro Herói:</label>
+            <input type="number" id="levelAtual3" min="1" max="150">
+            <label for="levelDesejado3">Nível Desejado:</label>
+            <input type="number" id="levelDesejado3" min="1" max="150">
+            <p>EXP Necessária: <span id="resultado3" class="result">0</span></p>
+        </div>
+
+        <div class="input-group">
+            <label for="levelAtual4">Nível Atual do Quarto Herói:</label>
+            <input type="number" id="levelAtual4" min="1" max="150">
+            <label for="levelDesejado4">Nível Desejado:</label>
+            <input type="number" id="levelDesejado4" min="1" max="150">
+            <p>EXP Necessária: <span id="resultado4" class="result">0</span></p>
+        </div>
+
+        <div class="input-group">
+            <label for="levelAtual5">Nível Atual do Quinto Herói:</label>
+            <input type="number" id="levelAtual5" min="1" max="150">
+            <label for="levelDesejado5">Nível Desejado:</label>
+            <input type="number" id="levelDesejado5" min="1" max="150">
+            <p>EXP Necessária: <span id="resultado5" class="result">0</span></p>
+        </div>
+
+        <button class="calculate-btn" onclick="calcularExp()">Calcular EXP Total</button>
+        <p><strong>Total de EXP Necessária:</strong> <span id="expTotal">0</span></p>
+    </div>
+
+    <script>
+        const expLevels = [
+            0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500,
+            1600, 1700, 1800, 1900, 2000, 2100, 2300, 2700, 3200, 3900, 4600, 5500, 6600, 8000,
+            9500, 12000, 14000, 17000, 20000, 24000, 29000, 35000, 41000, 49000, 59000, 71000,
+            85000, 110000, 130000, 150000, 180000, 220000, 260000, 310000, 370000, 440000,
+            530000, 630000, 760000, 910000, 1100000, 1400000, 1600000, 1900000, 2100000,
+            2300000, 2500000, 2800000, 3100000, 3400000, 3700000, 4100000, 4600000, 4900000,
+            5400000, 5900000, 6500000, 7200000, 7900000, 8700000, 9500000, 11000000, 12000000,
+            13000000, 13000000, 14000000, 14000000, 15000000, 16000000, 17000000, 18000000,
+            19000000, 20000000, 21000000, 22000000, 23000000, 24000000, 25000000, 26000000,
+            27000000, 28000000, 30000000, 31000000, 33000000, 35000000, 37000000, 39000000,
+            41000000, 43000000, 45000000, 47000000, 49000000, 51000000, 53000000, 55000000,
+            57000000, 59000000, 61000000, 63000000, 65000000, 67000000, 69000000, 71000000,
+            73000000, 75000000, 77000000, 79000000, 81000000, 83000000, 85000000, 87000000,
+            89000000, 91000000, 93000000, 95000000, 97000000, 100000000, 105000000, 110000000,
+            115000000, 120000000, 125000000, 130000000, 135000000, 140000000, 145000000,
+            150000000, 155000000, 160000000, 165000000, 170000000, 175000000, 180000000,
+            185000000
+        ];
+
+        function calcularExp() {
+            let expTotal = 0;
+            for (let i = 1; i <= 5; i++) {
+                const levelAtual = parseInt(document.getElementById(`levelAtual${i}`).value);
+                const levelDesejado = parseInt(document.getElementById(`levelDesejado${i}`).value);
+                
+                if (levelAtual && levelDesejado && levelDesejado > levelAtual) {
+                    let expNecessaria = 0;
+                    for (let j = levelAtual; j < levelDesejado; j++) {
+                        expNecessaria += expLevels[j];
+                    }
+                    document.getElementById(`resultado${i}`).textContent = expNecessaria.toLocaleString();
+                    expTotal += expNecessaria;
+                } else {
+                    document.getElementById(`resultado${i}`).textContent = "0";
+                }
+            }
+            document.getElementById("expTotal").textContent = expTotal.toLocaleString();
+        }
+
+        function replicarValores() {
+            const levelAtual1 = document.getElementById("levelAtual1").value;
+            const levelDesejado1 = document.getElementById("levelDesejado1").value;
+            
+            for (let i = 2; i <= 5; i++) {
+                document.getElementById(`levelAtual${i}`).value = levelAtual1;
+                document.getElementById(`levelDesejado${i}`).value = levelDesejado1;
+            }
+        }
+    </script>
+</body>
+</html>
